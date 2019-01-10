@@ -1,0 +1,346 @@
+package com.kh.silsub5;
+import java.util.Random;
+import java.util.Scanner;
+public class ArrayTest {
+	public void test1() {
+		/*길이가 10인 배열을 선언하고 1부터 10까지의
+		값을 순서대로 배열 인덱스에 넣어 그 값을
+		출력하는 코드를 작성하시오.*/
+		int[] arr = new int[10];
+		for(int i=0;i<arr.length;i++) {
+				arr[i] = i+1;
+			System.out.println("arr["+i+"] : "+arr[i]);
+		}
+	}
+	public void test2() {
+		/*길이가 5인 String 배열을 선언하고,
+		“딸기”, ”바나나”, ”복숭아”, ”키위”, ”사과”로
+		초기화를 한 후,
+		배열 인덱스를 활용해서 바나나를 출력해
+		보세요*/
+		String[] strArr = {"딸기","바나나","복숭아","키위","사과"};
+		for(int i= 0 ; i<strArr.length;i++) {
+			System.out.println("strArr["+i+"] : "+strArr[i]);
+		}
+	}
+	public void test3() {
+		/*문자열을 하나 입력 받아 배열에 넣고 문자를
+		하나 입력 받아 입력 받은 문자가 문자열에 몇 개
+		인지 개수를 출력하는 프로그램을 작성하세요.*/
+		//문자열 입력
+		//갯수 출력
+		Scanner sc = new Scanner(System.in);
+		System.out.print("문자열을 입력하세요 : ");
+		String str = sc.nextLine();
+		System.out.print("문자를 입력하세요 : ");
+		char ch = sc.next().charAt(0);
+		int count=0;
+		/* 원래 풀던 방법
+		 * for(int i=0;i<str.length();i++) {
+			char strCh = str.charAt(i);
+			if(ch==strCh) {
+				count+=1;
+			}
+		}*/
+		char[] strArr = new char[str.length()];
+		for(int i=0;i<str.length();i++) {
+			strArr[i]=str.charAt(i);
+			if(strArr[i]==ch){
+				count+=1;
+			}
+		}
+		System.out.println("입력하신 문자열 "+str+"에서 찾으시는 문자 "+ch+"는 "+count+"개 입니다.");
+	}
+	public void test4_1() {
+		/*주민등록번호 성별자리 이후부터 *로 가리기.
+		단, 원본 배열값은 변경 없이 배열 복사본으로
+		변경하세요*/
+		/*for(int i=0;i<regisNum.length();i++) {
+			regisNumArr[i]=regisNum.charAt(i);
+			if(i>7) {
+				str+="*";
+			}else {
+				str+=regisNumArr[i]+"";
+			}
+		}System.out.println(str);*/
+		//for문 이용해서 대입
+		String str = "";
+		Scanner sc = new Scanner(System.in);
+		System.out.print("주민등록 번호를 입력하세요('-'포함) : ");
+		String origin = sc.nextLine();
+		char[] originArr = new char[origin.length()];//원본 배열
+		char[] copyArr= new char[origin.length()];//복사 배열
+		
+		for(int i=0;i<origin.length();i++) {//주민등록번호를 원본배열에 대입
+			originArr[i]=origin.charAt(i);
+			str+=originArr[i];
+		}
+		System.out.println("regisNumOriginArr[i] (원본) : "+str);
+		str="";
+		for(int i=0;i<origin.length();i++) {//복사배열에 원본 배열값 대입
+			copyArr[i]=originArr[i];
+			str+=copyArr[i];
+		}
+		System.out.println("regisNumCopyArr[i] (복사) : "+str);
+		str="";
+		for(int i=0;i<copyArr.length;i++) {//복사배열에서 주민등록번호 뒷자리 * 만들기
+			if(i>7) {
+				copyArr[i]='*';
+				str+=copyArr[i];
+			}else {
+				str+=copyArr[i];
+			}
+		}System.out.println("copyArr변경 : "+str);
+		
+	}
+	public void test4_2() {
+		//arracopy사용
+		Scanner sc = new Scanner(System.in);
+		String str = "";
+		System.out.println("주민등록번호를 입력하세요(-포함) : ");
+		String origin=sc.nextLine();
+		
+		//원본 배열 생성
+		char[] originArr = new char[origin.length()];
+		for(int i=0;i<origin.length();i++) {
+			originArr[i]=origin.charAt(i);
+			str+=originArr[i];
+		}System.out.println("originArr : "+str);		
+		str="";
+		//복사할 배열 생성
+		char[] copyArr = new char[origin.length()];
+		
+		//복사하기
+		System.arraycopy(originArr, 0, copyArr, 0, origin.length());
+		
+		//복사한 값 str에 넣기
+		for(int i=0;i<copyArr.length;i++) {
+			str+=copyArr[i];
+		}
+		System.out.println("copyArr : "+str);
+		str="";
+		
+		//복사배열에 값을 바꾸기
+		for(int i=0;i<copyArr.length;i++) {
+			if(i>7) {
+				str+="*";
+			}else {
+				str+=copyArr[i];
+			}
+		}
+		System.out.println("복사배열값 바꾼 후 copyArr : "+str );
+	}
+	public void test4_3() {
+		//clone을 사용하여 바꾸기
+		Scanner sc = new Scanner(System.in);
+		System.out.print("주민번호 입력 (-포함): ");
+		String origin=sc.nextLine();
+		char[] originArr = new char[origin.length()];
+		String str ="";
+		//원본 배열 생성
+		for(int i=0;i<origin.length();i++) {
+			originArr[i]=origin.charAt(i);
+			str+=originArr[i];
+		}System.out.println("원본배열 : "+str);
+		str="";//초기화를 안해주면 원본배열뒤에 복사한배열이 바로 나옴
+		//카피본 배열
+		char[] copyArr=new char[origin.length()];
+		//clone사용하여 또 다른 새로운 카피본 배열 생성
+		copyArr=originArr.clone();
+		//clone으로 생성한 배열 값 출력
+		for(int i=0;i<copyArr.length;i++) {
+			str+=copyArr[i];
+		}System.out.println("clone으로 복사한 복사배열 : "+str);
+		str="";
+		//clone으로 생성한 배열의 값 변경하기
+		for(int i=0;i<copyArr.length;i++) {
+			if(i>7) {
+				str+="*";
+			}else {
+				str+=copyArr[i];
+			}
+		}
+		System.out.println("변경한 복사배열 : "+str);
+	}
+	public void test5() {
+		/*홀수인 양의 정수를 입력 받아 배열의 중간까지는
+		1부터 1씩 증가하여 오름차순으로 값을 넣고, 중간
+		이후부터 끝까지는 1씩 감소하여 내림차순으로 값
+		넣어 출력하는 프로그램을 작성하세요*/
+		Scanner sc = new Scanner(System.in);
+		System.out.print("양의 정수중 홀수를 입력하세요 : ");
+		int num = sc.nextInt();//num=5
+		int mok = num/2;//mok=2
+		//인덱스는 0부터 시작
+		//9입력시
+		//1 2 3 4 5 4 3 2 1 
+		//0 1 2 3 4 5 6 7 8 
+		//5입력시
+		// 1 2 3 2 1 
+		// 0 1 2 3 4
+		/*int[] iarr=new int[num];
+		for(int i=0;i<iarr.length;i++) {
+			if(i<=mok) {
+				for(int j=1;j<=mok+1;j++) {
+					iarr[i]=j;
+				}
+				
+				System.out.println(iarr[i]);
+			}else {
+				System.out.println("*");
+			}
+		}*/
+		//이 방법 말고 없나?????
+		int[] iarr=new int[num];
+		for(int i=0;i<iarr.length;i++) {
+			if(i<=mok) {
+				int j=i+1;
+				iarr[i]=j;
+				System.out.print(iarr[i]+" ");
+			}
+			else {
+				int j=mok;
+				iarr[i]=j;
+				System.out.print(iarr[i]+" ");
+				mok--;
+			}
+		}
+	}
+	public void test6() {
+		/*	로또번호 자동 생성기 프로그램을 작성하세요.
+		단, 중복 값이 있으면 안되고, 오름차순으로
+		정렬하여 출력하세요.*/
+			/*int[] lottoArr = new int[6];
+			label :
+			for(int i= 0;i<lottoArr.length;i++) {
+				lottoArr[i]=new Random().nextInt(45)+1;
+				for(int j=0;j<lottoArr.length-1;j++) {
+					for(int k=lottoArr.length-1;k>0;k--) {
+						if(lottoArr[j]==lottoArr[k]) {
+							lottoArr[j]=new Random().nextInt(45)+1;
+						}else break label;
+					}
+				}
+				
+				System.out.println(lottoArr[i]);
+			}*/
+		//lotto 6자리를 랜덤 값으로 받음
+		int[] lottoArr = new int[6];
+		for(int i=0;i<lottoArr.length;i++) {
+			lottoArr[i]=new Random().nextInt(45)+1;
+		}
+		//각 자리 값들을 비교
+		for(int i=1;i<lottoArr.length;i++) {//(큰값)이랑 (작은값)들을 비교
+			for(int j=0;j<i;j++) {//i=4일때 j=0,1,2,3까지 반복
+				if(lottoArr[i]==lottoArr[j]) {//0번째 자리 ~5번째 자리까지 비교했을때 같은 값이 있으면 다시 랜덤값 뽑기
+					lottoArr[i]=new Random().nextInt(45)+1;
+				}else if(lottoArr[i]<lottoArr[j]) {//다른 값들이 나왔는데 '인덱스가 작은값'이 '인덱스 큰값'보다 크면 자리 바꿔주기
+					int temp;
+					temp=lottoArr[i];
+					lottoArr[i] = lottoArr[j];
+					lottoArr[j]=temp;
+				}
+			}
+		}
+		//배열은 출력코드를 따로 뽑아줘야 한다.
+		for(int i=0;i<lottoArr.length;i++) {
+			if(i!=lottoArr.length-1) {
+				System.out.print(lottoArr[i]+", ");
+			}else {
+				System.out.print(lottoArr[i]);
+			}
+		}
+	}public void test6_1() {
+		
+		int[] lotto = new int[6];
+		int i=0;
+		int j=0;
+		while(i<lotto.length) {
+			//랜덤값을 각 인덱스 배열변수에 대입
+			label:
+				for(i=0;i<lotto.length;i++) {
+					lotto[i]=new Random().nextInt(6)+1;
+					for(i=1;i<lotto.length;i++) {
+						//큰 반복횟수를 j
+						for(j=0;j<i;j++) {
+							if(i!=j) {
+								if(lotto[i]==lotto[j]) {
+									i=i-1; break label;
+								}else if(lotto[i]<lotto[j]){
+									int temp;
+									temp=lotto[i];
+									lotto[i]=lotto[j];
+									lotto[j]=temp;
+									System.out.print(lotto[i]+", ");
+									
+								}else {
+									lotto[i]=lotto[i];
+									System.out.print(lotto[i]+"\n");
+								}
+							}else continue;
+							
+						}
+					}
+			}
+		}
+	}
+	public void test6_2working() {
+		int sw=0;
+		int[] lotto = new int[6];
+		
+		do {
+			
+			if(sw==0) {
+				for(int i=0;i<lotto.length;i++) {
+					lotto[i]=new Random().nextInt(45)+1;
+					sw=1;
+				}
+			}else if(sw==1) {
+				for(int i=1;i<lotto.length;i++) {
+					for(int j=0;j<i;j++) {
+						if(lotto[i]==lotto[j]) {
+							lotto[i]=new Random().nextInt(45)+1;
+							i=i-1;
+							sw=1;
+						}else if(lotto[i]<lotto[j]) {
+							int temp;
+							temp=lotto[i];
+							lotto[i]=lotto[j];
+							lotto[j]=temp;
+							sw=2;
+						}else {
+							sw=2;
+							
+						}
+					}
+				}
+			}
+		}while(sw<2);
+		for(int i=0;i<lotto.length;i++) {
+			if(i!=lotto.length-1) {
+				System.out.print(lotto[i]+", ");
+			}else {
+				System.out.print(lotto[i]);
+			}
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}
